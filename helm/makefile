@@ -2,7 +2,7 @@
 NAMESPACE ?= kuma-system
 CHART_REPO_NAME ?= kuma
 CHART_NAME ?= kuma/kuma
-CHART_VERSION ?= 2.7.1
+CHART_VERSION ?= 2.7.1-hardened
 RELEASE ?= kuma
 PROJECT ?= poc-kuma
 

@@ -1,7 +1,7 @@
 global:
   image:
     registry: docker.io
-    repository: kumahq/kuma-cp
+    repository: jaimehenao8126/kuma-cp
 
 controlPlane:
   envVars:
