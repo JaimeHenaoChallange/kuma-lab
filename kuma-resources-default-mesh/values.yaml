@@ -40,6 +40,37 @@ kuma-resources:
     http:
       numRetries: 0
       perTryTimeout: 2m30s
+backOff:
+          baseInterval: 25ms
+          maxInterval: 250ms
+  externalServices:
+  # Set exyternal services to false to disable the default external service
+  # Disable allow all
+  trafficPermissionAllowAll:
+    enabled: false
+  trafficPermissionsEnabled: false
+  # Enabling communication from a specific service to the mesh
+  meshTrafficPermissionAllowAllSpecificServiceToMesh:
+    enabled: true
+    services:
+      - name: test
+        sourceKey: app.kubernetes.io/name
+  # Enabling communication from a specific service to the mesh
+  meshTrafficPermissionsByNamespace:
+    enabled: true
+    namespaces:
+      - namespace: test
+        sources:
+          - sourceKey: app.kubernetes.io/name
+            sourceValue: gateway
+  # Enable temporarily for identifying which traffic is now whitelisted
+  meshTrafficPermissionAllowAll:
+    enabled: false
+  meshTrafficPermissionsEnabled: true
+  meshTrafficPermissionsShadowEnabled: false
+  # Test Mesh traffic permissions for external services
+  meshTrafficPermissionsExternalServicesEnabled: false
+  # Mesh traffic permissions for internal NSL services (sorted alphabetically as listed in GitHub)
       backOff:
         baseInterval: 25ms
         maxInterval: 250ms

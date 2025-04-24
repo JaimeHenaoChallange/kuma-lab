@@ -1,0 +1,76 @@
+global:
+  image:
+    registry: docker.io
+    repository: kumahq/kuma-cp
+
+controlPlane:
+  envVars:
+    KUMA_RUNTIME_KUBERNETES_SIDECAR_TRAFFIC_EXCLUDE_OUTBOUND_PORTS: 8125,8126
+    KUMA_RUNTIME_KUBERNETES_INJECTOR_CONTAINER_PATCHES: container-patch
+    KUMA_EXPERIMENTAL_AUTO_REACHABLE_SERVICES: "true"    
+    KUMA_RUNTIME_KUBERNETES_INJECTOR_SIDECAR_CONTAINER_WAIT_FOR_DATAPLANE_READY: "true"
+
+  replicas: 2
+
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 2
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            averageUtilization: 85
+            type: Utilization
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            averageUtilization: 85
+            type: Utilization
+
+  podDisruptionBudget:
+    enabled: true
+
+  # Lower resource requests and limits for Kind
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+  nodeSelector: &nodeSelector
+    kubernetes.io/os: linux
+
+  tolerations: &tolerations
+    - key: system-no-schedule
+      operator: Equal
+      value: "true"
+      effect: NoSchedule
+
+  podSecurityContext: &podSecurityContext
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+  containerSecurityContext: &containerSecurityContext
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+        - ALL
+
+kubectl:
+  image:
+    registry: docker.io
+    repository: bitnami/kubectl
+    tag: 1.26.13
+
+# hooks:
+#   nodeSelector: *nodeSelector
+#   tolerations: *tolerations
+#   podSecurityContext: *podSecurityContext
+#   containerSecurityContext: *containerSecurityContext
