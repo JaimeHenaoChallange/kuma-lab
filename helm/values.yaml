@@ -1,0 +1,109 @@
+global:
+  image:
+    # Use our own image from ECR
+    registry: 806145550734.dkr.ecr.eu-west-1.amazonaws.com/nexus
+
+controlPlane:
+  envVars:
+    KUMA_RUNTIME_KUBERNETES_SIDECAR_TRAFFIC_EXCLUDE_OUTBOUND_PORTS: 8125,8126
+    KUMA_RUNTIME_KUBERNETES_INJECTOR_CONTAINER_PATCHES: container-patch
+    KUMA_EXPERIMENTAL_AUTO_REACHABLE_SERVICES: "true"    
+    KUMA_RUNTIME_KUBERNETES_INJECTOR_SIDECAR_CONTAINER_WAIT_FOR_DATAPLANE_READY: "true"
+  # extraLabels:
+  #   tags.datadoghq.com/env: dev1
+  #   tags.datadoghq.com/service: kuma-cp
+  #   tags.datadoghq.com/version: 2.7.1-helm
+  #   cost-centre: "3681800000"
+  #   opco-code: BA
+  #   project: nexus
+  #   cmdb-app-sys-id: e15c281a1b35e19464252060f54bcb2c
+  #   environment-type: nl
+
+  replicas: 2
+
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 1
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            averageUtilization: 85
+            type: Utilization
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            averageUtilization: 85
+            type: Utilization
+
+  podDisruptionBudget:
+    enabled: true
+
+  # The dev1 environment is much busier than others so increased resources.
+  resources:
+    requests:
+      cpu: 12
+      memory: 10Gi
+    limits:
+      cpu: 12
+      memory: 10Gi
+
+  nodeSelector: &nodeSelector
+    # Do not stick to Core Managed Node Group to allow autoscaling with Karpenter
+    kubernetes.io/os: linux
+
+  tolerations: &tolerations
+    - key: system-no-schedule
+      operator: Equal
+      value: "true"
+      effect: NoSchedule
+
+  podSecurityContext: &podSecurityContext
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+  containerSecurityContext: &containerSecurityContext
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+        - ALL
+
+cni:
+  enabled: true
+  chained: true
+
+  # # EKS-specific configuration
+  # netDir: /etc/cni/net.d
+  # binDir: /opt/cni/bin
+  # confName: 10-aws.conflist
+
+  podSecurityContext: *podSecurityContext
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsGroup: 0
+    runAsNonRoot: false
+    runAsUser: 0
+    capabilities:
+      drop:
+        - ALL
+
+kubectl:
+  image:
+    # Use our own image from ECR
+    registry: 806145550734.dkr.ecr.eu-west-1.amazonaws.com/nexus
+    repository: kubectl
+    # -- The kubectl image tag
+    tag: 1.26.13-patch-490.1
+
+hooks:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+  podSecurityContext: *podSecurityContext
+  containerSecurityContext: *containerSecurityContext

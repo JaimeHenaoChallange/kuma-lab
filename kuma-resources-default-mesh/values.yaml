@@ -1,0 +1,89 @@
+kuma-mesh:
+  mesh:
+    name: default
+    mtls:
+      enabledBackend: ca-1
+      backends:
+        name: ca-1
+        type: builtin
+        dpCert:
+          rotation:
+            expiration: 1d
+        conf:
+          caCert:
+            RSAbits: 2048
+            expiration: 10y
+    networking:
+      outbound:
+        passthrough: true
+    metrics:
+      enabledBackend: prometheus-1
+      backends:
+        - name: prometheus-1
+          type: prometheus
+          conf:
+            port: 5670
+            path: /metrics
+            tls:
+              mode: disabled
+            tags:
+              kuma.io/service: dataplane-metrics
+kuma-resources:
+  mesh:
+    name: default
+  meshAccessLogs:
+    enabled: true
+  meshGatewayTimeout:
+    enabled: true
+  meshRetryAllDefault:
+    enabled: true
+    http:
+      numRetries: 0
+      perTryTimeout: 2m30s
+      backOff:
+        baseInterval: 25ms
+        maxInterval: 250ms
+  externalServices:
+  # Set exyternal services to false to disable the default external service
+  # Disable allow all
+  trafficPermissionAllowAll:
+    enabled: false
+  trafficPermissionsEnabled: false
+  # Enabling communication from a specific service to the mesh
+  meshTrafficPermissionAllowAllSpecificServiceToMesh:
+    enabled: true
+    services:
+      - name: test
+        sourceKey: app.kubernetes.io/name
+  # Enabling communication from a specific service to the mesh
+  meshTrafficPermissionsByNamespace:
+    enabled: true
+    namespaces:
+      - namespace: test
+        sources:
+          - sourceKey: app.kubernetes.io/name
+            sourceValue: gateway
+  # Enable temporarily for identifying which traffic is now whitelisted
+  meshTrafficPermissionAllowAll:
+    enabled: false
+  meshTrafficPermissionsEnabled: true
+  meshTrafficPermissionsShadowEnabled: false
+  # Test Mesh traffic permissions for external services
+  meshTrafficPermissionsExternalServicesEnabled: false
+  # Mesh traffic permissions for internal NSL services (sorted alphabetically as listed in GitHub)
+  meshTrafficPermissions:
+    - name: test-1
+      destinationKey: app.kubernetes.io/name
+      destinationValue: test-1
+      sources:
+        - sourceKey: app.kubernetes.io/name
+          sourceValue: test-2
+    # INTERNAL SERVICES FOR NX-BOLT
+    - name: app-1
+      destinationKey: app.kubernetes.io/name
+      destinationValue: app-1
+      sources:
+        - sourceKey: app.kubernetes.io/name
+          sourceValue: app-2
+        - sourceKey: app.kubernetes.io/name
+          sourceValue: kubeops
