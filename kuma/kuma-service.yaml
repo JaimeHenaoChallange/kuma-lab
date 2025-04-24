@@ -7,5 +7,5 @@ spec:
   mesh: default
   tags:
     service: poc-kuma-service
-  address: poc-kuma-service.default.svc.cluster.local
+  address: poc-kuma-service  kubectl apply -f https://kumahq.github.io/charts/kuma-crds.yaml.default.svc.cluster.local
   port: 80
