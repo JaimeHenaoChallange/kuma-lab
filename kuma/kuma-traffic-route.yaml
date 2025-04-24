@@ -1,0 +1,21 @@
+apiVersion: kuma.io/v1alpha1
+kind: TrafficRoute
+metadata:
+  name: poc-kuma-service-route
+  namespace: poc
+spec:
+  destination:
+    name: poc-kuma-service
+  sources:
+    - match:
+        service: other-service
+  destinations:
+    - match:
+        service: my-service
+  routes:
+    - match:
+        uri:
+          prefix: /api
+      destination:
+        name: poc-kuma-service
+        port: 80

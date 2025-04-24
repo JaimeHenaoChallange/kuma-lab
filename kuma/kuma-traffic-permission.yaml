@@ -1,0 +1,12 @@
+apiVersion: kuma.io/v1alpha1
+kind: TrafficPermission
+metadata:
+  name: allow-poc-kuma-service
+  namespace: poc
+spec:
+  destination:
+    match:
+      service: poc-kuma-service
+  sources:
+    - match:
+        service: other-service

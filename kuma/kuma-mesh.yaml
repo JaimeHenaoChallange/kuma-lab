@@ -1,0 +1,8 @@
+apiVersion: kuma.io/v1alpha1
+kind: Mesh
+metadata:
+  name: poc-kuma-mesh
+  namespace: poc
+spec:
+  mtls:
+    enabledBackend: ca-1
