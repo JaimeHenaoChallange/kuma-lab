@@ -1,0 +1,18 @@
+## Theses are mostly irelevant in this use case but mandatory for helm templating to run
+apiVersion: v2
+name: service
+version: 1.0.0
+#############
+
+dependencies:
+  - name: kuma
+    version: 2.7.1
+    repository: https://kumahq.github.io/charts
+    
+# dependencies:
+#   - name: kuma-mesh
+#     version: 0.1.3
+#     repository: oci://806145550734.dkr.ecr.eu-west-1.amazonaws.com/nexus/helm
+#   - name: kuma-resources
+#     version: 1.5.0
+#     repository: oci://806145550734.dkr.ecr.eu-west-1.amazonaws.com/nexus/helm

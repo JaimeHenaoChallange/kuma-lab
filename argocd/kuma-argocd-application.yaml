@@ -1,4 +1,3 @@
-# filepath: /workspaces/kuma-lab/kuma-lab/helm/kuma-argocd-application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -7,8 +6,8 @@ metadata:
 spec:
   project: poc
   source:
-    repoURL: 'file:///workspaces/kuma-lab/kuma-lab/helm'
-    path: helm
+    repoURL: 'https://github.com/JaimeHenaoChallange/kuma-lab.git'
+    path: helm/kuma
     targetRevision: HEAD
     helm:
       valueFiles:
