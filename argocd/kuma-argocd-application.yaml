@@ -1,0 +1,22 @@
+# filepath: /workspaces/kuma-lab/kuma-lab/helm/kuma-argocd-application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kuma
+  namespace: argocd
+spec:
+  project: poc
+  source:
+    repoURL: 'file:///workspaces/kuma-lab/kuma-lab/helm'
+    path: helm
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - poc-kuma-values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kuma-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

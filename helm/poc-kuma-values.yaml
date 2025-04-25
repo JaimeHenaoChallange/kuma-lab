@@ -1,7 +1,8 @@
 global:
   image:
-    registry: docker.io
-    repository: jaimehenao8126/kuma-cp
+    # registry: docker.io
+    # repository: jaimehenao8126/kuma-cp
+    repository: kumahq/kuma
 
 controlPlane:
   envVars:
@@ -69,8 +70,8 @@ kubectl:
     repository: bitnami/kubectl
     tag: 1.26.13
 
-# hooks:
-#   nodeSelector: *nodeSelector
-#   tolerations: *tolerations
-#   podSecurityContext: *podSecurityContext
-#   containerSecurityContext: *containerSecurityContext
+hooks:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+  podSecurityContext: *podSecurityContext
+  containerSecurityContext: *containerSecurityContext
