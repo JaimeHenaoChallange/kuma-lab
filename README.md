@@ -1,7 +1,3 @@
-Aquí tienes un README completo y detallado para el repositorio kuma-lab, basado en todo lo que hemos conversado y la estructura del proyecto:
-
----
-
 # Kuma Lab
 
 Este repositorio contiene los recursos necesarios para desplegar y gestionar Kuma, un service mesh universal, en un clúster de Kubernetes utilizando Helm y ArgoCD. Incluye configuraciones para el control plane de Kuma, políticas de tráfico, inyección automática de sidecars, y ejemplos de aplicaciones.
