@@ -24,33 +24,31 @@ kind: ClusterRole
 metadata:
   name: {{ include "kuma.name" . }}-install-crds
   annotations:
+    "helm.sh/resource-policy": "keep"
     "helm.sh/hook": "{{ $hook }}"
-    "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded,hook-failed"
   labels:
-  {{- include "kuma.labels" . | nindent 4 }}
+    {{- include "kuma.labels" . | nindent 4 }}
 rules:
   - apiGroups:
-    - "apiextensions.k8s.io"
+      - apiextensions.k8s.io
     resources:
       - customresourcedefinitions
     verbs:
       - create
-      - patch
-      - update
       - list
-      - get
+      - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ include "kuma.name" . }}-install-crds
   annotations:
+    "helm.sh/resource-policy": "keep"
     "helm.sh/hook": "{{ $hook }}"
-    "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded,hook-failed"
   labels:
-  {{- include "kuma.labels" . | nindent 4 }}
+    {{- include "kuma.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
