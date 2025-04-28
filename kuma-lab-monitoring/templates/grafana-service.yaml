@@ -1,1 +1,14 @@
-   cd /workspaces/kuma-lab/kuma-lab/helm
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  type: {{ .Values.grafana.service.type }}
+  ports:
+    - port: {{ .Values.grafana.service.port }}
+      targetPort: 3000
+      nodePort: {{ .Values.grafana.service.nodePort }}
+  selector:
+    app: grafana
