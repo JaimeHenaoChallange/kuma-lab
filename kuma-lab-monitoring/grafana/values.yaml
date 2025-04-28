@@ -1,0 +1,7 @@
+grafana:
+  service:
+    type: NodePort
+    nodePort: 30030  # Puerto NodePort para Grafana
+    port: 3000       # Puerto interno del servicio
+  admin:
+    existingSecret: grafana-admin

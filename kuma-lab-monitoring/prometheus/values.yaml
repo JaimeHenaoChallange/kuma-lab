@@ -1,0 +1,5 @@
+prometheus:
+  service:
+    type: NodePort
+    nodePort: 30090  # Puerto NodePort para Prometheus
+    port: 9090       # Puerto interno del servicio

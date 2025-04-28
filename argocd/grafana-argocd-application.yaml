@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/JaimeHenaoChallange/kuma-lab.git'
     targetRevision: HEAD
-    path: kuma-lab-monitoring
+    path: kuma-lab-monitoring/grafana
     helm:
       valueFiles:
         - values.yaml

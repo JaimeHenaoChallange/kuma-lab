@@ -1,0 +1,6 @@
+apiVersion: v2
+name: kuma-lab-monitoring
+description: A Helm chart for deploying Prometheus and Grafana for monitoring Kuma
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
