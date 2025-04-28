@@ -63,6 +63,10 @@ global:
       drop:
         - ALL
 
+metrics:
+  prometheus:
+    enabled: true
+
 kubectl:
   image:
     registry: docker.io

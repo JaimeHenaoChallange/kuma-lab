@@ -1,46 +1,4 @@
-kuma-mesh:
-  mesh:
-    name: default
-    mtls:
-      enabledBackend: ca-1
-      backends:
-        name: ca-1
-        type: builtin
-        dpCert:
-          rotation:
-            expiration: 1d
-        conf:
-          caCert:
-            RSAbits: 2048
-            expiration: 10y
-    networking:
-      outbound:
-        passthrough: true
-    metrics:
-      enabledBackend: prometheus-1
-      backends:
-        - name: prometheus-1
-          type: prometheus
-          conf:
-            port: 5670
-            path: /metrics
-            tls:
-              mode: disabled
-            tags:
-              kuma.io/service: dataplane-metrics
 kuma-resources:
-  mesh:
-    name: default
-  meshAccessLogs:
-    enabled: true
-  meshGatewayTimeout:
-    enabled: true
-  meshRetryAllDefault:
-    enabled: true
-    http:
-      numRetries: 0
-      perTryTimeout: 2m30s
-  # Políticas de tráfico específicas
   meshTrafficPermissions:
     - name: allow-app1-to-app2
       destinationKey: app.kubernetes.io/name
@@ -48,12 +6,6 @@ kuma-resources:
       sources:
         - sourceKey: app.kubernetes.io/name
           sourceValue: app-1
-    - name: allow-app2-to-kubeops
-      destinationKey: app.kubernetes.io/name
-      destinationValue: kubeops
-      sources:
-        - sourceKey: app.kubernetes.io/name
-          sourceValue: app-2
   meshTrafficRoutes:
     - name: route-app1-to-app2
       sources:
