@@ -3,12 +3,16 @@ global:
   image:
     repository: kumahq/kuma
 
-# controlPlane:
-#   envVars:
-#     KUMA_RUNTIME_KUBERNETES_INJECTOR_CONTAINER_PATCHES: container-patch
-#     KUMA_EXPERIMENTAL_AUTO_REACHABLE_SERVICES: "true"
-#     #KUMA_RUNTIME_KUBERNETES_INJECTOR_SIDECAR_CONTAINER_WAIT_FOR_DATAPLANE_READY: "true"
-#     KUMA_RUNTIME_KUBERNETES_SIDECAR_TRAFFIC_EXCLUDE_OUTBOUND_PORTS: "8125,8126"
+controlPlane:
+  service:
+    type: NodePort
+    apiServer:
+      http:
+        nodePort: 30081
+      https:
+        nodePort: 30082
+    diagnostics:
+      nodePort: 30080
 
   replicas: 2
 
