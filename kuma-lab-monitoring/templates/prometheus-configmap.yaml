@@ -25,5 +25,5 @@ data:
             labels:
               severity: critical
             annotations:
-              summary: "Instance {{ $labels.instance }} is down"
-              description: "The instance {{ $labels.instance }} has been down for more than 1 minute."
+              summary: "Instance {{`{{ $labels.instance }}`}} is down"
+              description: "The instance {{`{{ $labels.instance }}`}} has been down for more than 1 minute."
