@@ -12,3 +12,18 @@ data:
       - job_name: 'prometheus'
         static_configs:
           - targets: ['localhost:9090']
+    rule_files:
+      - /etc/prometheus/alert.rules
+
+  alert.rules: |
+    groups:
+      - name: example-alerts
+        rules:
+          - alert: InstanceDown
+            expr: up == 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Instance {{ $labels.instance }} is down"
+              description: "The instance {{ $labels.instance }} has been down for more than 1 minute."
